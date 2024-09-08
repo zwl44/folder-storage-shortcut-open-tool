@@ -1,9 +1,10 @@
 package zh.dragon.zl;
 
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
+import javafx.scene.image.Image;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 
@@ -15,20 +16,21 @@ import javafx.stage.Stage;
  */
 public class MainApp extends Application {
 
+
 	public static void main(String[] args) {
 		launch(args);
 	}
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		Label label = new Label("Hello, JavaFX!");
-		StackPane root = new StackPane();
-		root.getChildren().add(label);
-
-		Scene scene = new Scene(root, 300, 200);
-
-		primaryStage.setTitle("JavaFX with Maven");
-		primaryStage.setScene(scene);
+		// 设置应用程序图标
+		Image icon = new Image(getClass().getResourceAsStream("/zh/dragon/zl/images/icon.png"));
+		primaryStage.getIcons().add(icon);
+		BorderPane borderPane = FXMLLoader.load(getClass().getResource("controller/MainInterfaceView.fxml"));
+		BorderPane fileInformationManagementPane = FXMLLoader.load(getClass().getResource("controller/FileInformationManagementInterfaceView.fxml"));
+		borderPane.setCenter(fileInformationManagementPane);
+		primaryStage.setTitle("路径记录工具");
+		primaryStage.setScene(new Scene(borderPane, 800, 600));
 		primaryStage.show();
 	}
 
