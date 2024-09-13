@@ -7,8 +7,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
-import javafx.scene.layout.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -46,6 +46,8 @@ public class FileInformationManagementInterfaceViewController {
 	@FXML
 	public void initialize() {
 		BackGroundUtil.addBackGroundImage("/zh/dragon/zl/images/back.jpg", borderPane);
+
+
 		idColumn.setCellFactory(new Callback<TableColumn<FileInformation, Integer>, TableCell<FileInformation, Integer>>() {
 			@Override
 			public TableCell<FileInformation, Integer> call(TableColumn<FileInformation, Integer> param) {
@@ -70,8 +72,8 @@ public class FileInformationManagementInterfaceViewController {
 		pathColumn.setCellValueFactory(new PropertyValueFactory<>("path"));
 
 		//saveTableData();
-		//List<FileInformation> res = JsonUtil.loadFromJson(getClass().getResourceAsStream("/zh/dragon/zl/json/data.json"));
-		List<FileInformation> res = JsonUtil.loadFromJson("data/data.json");
+		List<FileInformation> res = JsonUtil.loadFromJson(getClass().getResourceAsStream("/zh/dragon/zl/json/data.json"));
+		//List<FileInformation> res = JsonUtil.loadFromJson("data/data.json");
 		ObservableList<FileInformation> observableList = FXCollections.observableList(res);
 
 		tableView.setItems(observableList);

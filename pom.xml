@@ -110,6 +110,7 @@
                             <mainClass>zh.dragon.zl.MainApp</mainClass> <!-- 请替换为你的主类路径 -->
                         </manifest>
                     </archive>
+
                 </configuration>
             </plugin>
         </plugins>
