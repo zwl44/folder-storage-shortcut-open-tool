@@ -4,43 +4,45 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="833.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="zh.dragon.zl.controller.FileInformationManagementInterfaceViewController">
-   <top>
-      <Pane prefHeight="83.0" prefWidth="796.0" BorderPane.alignment="CENTER">
-         <children>
-            <Button layoutX="14.0" layoutY="21.0" mnemonicParsing="false" onAction="#addPathInformation" prefHeight="42.0" prefWidth="98.0" text="新建" textAlignment="JUSTIFY">
-               <font>
-                  <Font name="System Italic" size="20.0" />
-               </font>
-            </Button>
-            <Button layoutX="132.0" layoutY="21.0" mnemonicParsing="false" onAction="#updatePathInformation" prefHeight="42.0" prefWidth="98.0" text="编辑" textAlignment="JUSTIFY">
-               <font>
-                  <Font name="System Italic" size="20.0" />
-               </font>
-            </Button>
-            <Button layoutX="246.0" layoutY="21.0" mnemonicParsing="false" onAction="#deletePathInformation" prefHeight="42.0" prefWidth="98.0" text="删除" textAlignment="JUSTIFY">
-               <font>
-                  <Font name="System Italic" size="20.0" />
-               </font>
-            </Button>
-            <Button layoutX="359.0" layoutY="21.0" mnemonicParsing="false" onAction="#openWindowOrFiles" prefHeight="42.0" prefWidth="210.0" text="打开文件或文件夹" textAlignment="JUSTIFY">
-               <font>
-                  <Font name="System Italic" size="20.0" />
-               </font>
-            </Button>
-         </children>
-      </Pane>
-   </top>
-   <center>
-      <TableView fx:id="tableView" prefHeight="517.0" prefWidth="784.0" stylesheets="@../css/Common.css" BorderPane.alignment="CENTER">
-        <columns>
-          <TableColumn fx:id="idColumn" prefWidth="111.0" text="编号" />
-          <TableColumn fx:id="nameColumn" prefWidth="113.0" text="名称" />
-            <TableColumn fx:id="pathColumn" prefWidth="598.0" text="路径信息" />
-        </columns>
-         <BorderPane.margin>
-            <Insets left="10.0" />
-         </BorderPane.margin>
-      </TableView>
-   </center>
+<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="833.0" stylesheets="@../css/Common.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="zh.dragon.zl.controller.FileInformationManagementInterfaceViewController">
+    <top>
+        <Pane prefHeight="83.0" prefWidth="796.0" BorderPane.alignment="CENTER">
+            <children>
+                <Button layoutX="14.0" layoutY="21.0" mnemonicParsing="false" onAction="#addPathInformation" prefHeight="32.0" prefWidth="75.0" text="新建" textAlignment="JUSTIFY">
+                    <font>
+                        <Font name="System Italic" size="20.0" />
+                    </font>
+                </Button>
+                <Button layoutX="100.0" layoutY="22.0" mnemonicParsing="false" onAction="#updatePathInformation" prefHeight="40.0" prefWidth="82.0" text="编辑" textAlignment="JUSTIFY">
+                    <font>
+                        <Font name="System Italic" size="20.0" />
+                    </font>
+                </Button>
+                <Button layoutX="195.0" layoutY="22.0" mnemonicParsing="false" onAction="#deletePathInformation" prefHeight="35.0" prefWidth="78.0" text="删除" textAlignment="JUSTIFY">
+                    <font>
+                        <Font name="System Italic" size="20.0" />
+                    </font>
+                </Button>
+                <Button layoutX="278.0" layoutY="22.0" mnemonicParsing="false" onAction="#openWindowOrFiles" prefHeight="43.0" prefWidth="206.0" text="打开文件或文件夹" textAlignment="JUSTIFY">
+                    <font>
+                        <Font name="System Italic" size="20.0" />
+                    </font>
+                </Button>
+                <TextField fx:id="searchTextField" layoutX="486.0" layoutY="25.0" prefHeight="33.0" prefWidth="200.0" />
+                <Label fx:id="deleteLabel" graphicTextGap="7.0" layoutX="659.0" layoutY="27.0" prefHeight="33.0" prefWidth="30.0" style="-fx-font-color: RED;" text="  X" textAlignment="CENTER" textOverrun="WORD_ELLIPSIS" visible="false" />
+            </children>
+        </Pane>
+    </top>
+    <center>
+        <TableView fx:id="tableView" prefHeight="517.0" prefWidth="784.0" stylesheets="@../css/Common.css" BorderPane.alignment="CENTER">
+            <columns>
+                <TableColumn fx:id="idColumn" prefWidth="111.0" text="编号" />
+                <TableColumn fx:id="nameColumn" prefWidth="113.0" text="名称" />
+                <TableColumn fx:id="pathColumn" prefWidth="598.0" text="路径信息" />
+            </columns>
+            <BorderPane.margin>
+                <Insets left="10.0" />
+            </BorderPane.margin>
+        </TableView>
+    </center>
 </BorderPane>

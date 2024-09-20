@@ -3,28 +3,33 @@
     -fx-alignment: CENTER; /* 设置文字居中 */
     -fx-font-size: 16px; /* 修改表头文字大小 */
 }
+
 .border {
     -fx-border-color: #c66666; /* 浅灰色边框 */
     -fx-border-width: 3; /* 边框宽度 */
     -fx-border-style: dotted; /* 边框样式 */
 }
-.text-field{
+
+.text-field {
     -fx-border-color: #0d0e0e; /* 浅灰色边框 */
     -fx-border-width: 1; /* 边框宽度 */
     -fx-border-style: solid; /* 边框样式 */
 }
+
 .button {
     -fx-border-color: #2c6ad7; /* 浅灰色边框 */
     -fx-border-width: 1; /* 边框宽度 */
     -fx-border-style: solid; /* 边框样式 */
 }
 
-.Tooltip{
+.Tooltip {
     -fx-font-size: 12px;
 }
-.table-view{
+
+.table-view {
     -fx-font-size: 15px;
 }
+
 .table-view .scroll-bar:horizontal {
     -fx-opacity: 0; /* 隐藏水平滚动条 */
     -fx-max-height: 0;

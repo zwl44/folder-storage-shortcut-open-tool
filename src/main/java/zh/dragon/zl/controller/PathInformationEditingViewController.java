@@ -13,6 +13,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import zh.dragon.zl.entry.FileInformation;
 import zh.dragon.zl.util.BackGroundUtil;
+import zh.dragon.zl.util.DialogUtil;
 
 import java.io.File;
 import java.util.List;
@@ -46,11 +47,12 @@ public class PathInformationEditingViewController {
 		Tooltip.install(imageView, tooltip);
 		// 点击图片打开文件选择器
 		imageView.setOnMouseClicked(event -> {
+			// 创建 FileChooser 实例
 			FileChooser fileChooser = new FileChooser();
 			fileChooser.setTitle("选择文件");
-
 			// 设置文件过滤器，可以选择所有类型或特定类型
-			fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("所有文件", "*.*"));
+			fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Folders", "*"),
+					new FileChooser.ExtensionFilter("All Files", "*.*"));
 			File selectedFile = fileChooser.showOpenDialog(textField.getScene().getWindow());
 
 			// 如果选择了文件
@@ -87,11 +89,17 @@ public class PathInformationEditingViewController {
 
 	@FXML
 	private void submitTitleInformation() {
-		FileInformation fileInformation = new FileInformation();
-		fileInformation.setName(textField.getText());
-		fileInformation.setPath(label.getText());
-		fileInformationManagementInterfaceViewController.addOrUpdateTitleInformation(fileInformation);
-		closeStage();
+		String text = textField.getText();
+		String labelText = label.getText();
+		if (text.isEmpty() || labelText.isEmpty()) {
+			DialogUtil.showAlert("警告！", "小龙特别提醒！！！", "没有填写名称或者选择文件！");
+		}else {
+			FileInformation fileInformation = new FileInformation();
+			fileInformation.setName(text);
+			fileInformation.setPath(labelText);
+			fileInformationManagementInterfaceViewController.addOrUpdateTitleInformation(fileInformation);
+			closeStage();
+		}
 	}
 
 
@@ -112,13 +120,6 @@ public class PathInformationEditingViewController {
 		label.setText(fileInformation.getPath());
 	}
 
-	/**
-	 * @author zwl
-	 * @date 2024/9/7 17:45
-	 * 保存路径信息
-	 */
-	private void saveInformation(FileInformation fileInformation) {
 
-	}
 
 }

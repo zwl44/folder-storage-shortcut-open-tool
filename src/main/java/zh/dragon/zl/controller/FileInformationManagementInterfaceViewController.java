@@ -2,9 +2,12 @@ package zh.dragon.zl.controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
@@ -15,6 +18,7 @@ import javafx.util.Callback;
 import zh.dragon.zl.MainApp;
 import zh.dragon.zl.entry.FileInformation;
 import zh.dragon.zl.util.BackGroundUtil;
+import zh.dragon.zl.util.DialogUtil;
 import zh.dragon.zl.util.JsonUtil;
 
 import java.awt.*;
@@ -22,6 +26,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
 
 /**
  * @author zwl
@@ -33,15 +38,23 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class FileInformationManagementInterfaceViewController {
 	private final ObservableList<FileInformation> fileInfoList = FXCollections.observableArrayList();
 	@FXML
-	private BorderPane borderPane;
+	public TableView<FileInformation> tableView;
 	@FXML
-	private TableView<FileInformation> tableView;
+	private BorderPane borderPane;
 	@FXML
 	private TableColumn<FileInformation, Integer> idColumn;
 	@FXML
 	private TableColumn<FileInformation, String> nameColumn;
 	@FXML
 	private TableColumn<FileInformation, String> pathColumn;
+
+	@FXML
+	private TextField searchTextField;
+
+	@FXML
+	private Label deleteLabel;
+
+	private ObservableList observableList;
 
 	@FXML
 	public void initialize() {
@@ -74,9 +87,11 @@ public class FileInformationManagementInterfaceViewController {
 		//saveTableData();
 		List<FileInformation> res = JsonUtil.loadFromJson(getClass().getResourceAsStream("/zh/dragon/zl/json/data.json"));
 		//List<FileInformation> res = JsonUtil.loadFromJson("data/data.json");
-		ObservableList<FileInformation> observableList = FXCollections.observableList(res);
+		observableList = FXCollections.observableList(res);
 
-		tableView.setItems(observableList);
+		//封装一个过滤层
+		FilteredList<FileInformation> fileInformation = new FilteredList<>(observableList, p -> true);
+		tableView.setItems(fileInformation);
 
 		//监听双击
 		// 监听表格的行双击事件
@@ -90,6 +105,30 @@ public class FileInformationManagementInterfaceViewController {
 			});
 			return row;
 		});
+		//监听搜索框的变化
+		// 实现过滤逻辑（模糊匹配或精确匹配）
+		searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+			// 设置过滤条件
+			fileInformation.setPredicate(information -> {
+				// 如果搜索框为空，则显示所有数据
+				if (newValue == null || newValue.isEmpty()) {
+					deleteLabel.setVisible(false);
+					return true;
+				}
+				deleteLabel.setVisible(true);
+				// 使用小写进行不区分大小写的匹配
+				String lowerCaseFilter = newValue.toLowerCase();
+				// 模糊匹配：检查名字和邮件是否包含搜索词
+				return information.getName().toLowerCase().contains(lowerCaseFilter); // 名字匹配// 不匹配
+			});
+		});
+
+		// 给Label添加鼠标点击事件监听器
+		deleteLabel.setOnMouseClicked(event -> {
+			// 当鼠标点击时，会执行这里的代码
+			searchTextField.clear();
+		});
+
 	}
 
 
@@ -101,7 +140,11 @@ public class FileInformationManagementInterfaceViewController {
 	 */
 	@FXML
 	public void openWindowOrFiles() {
-		openFileOrFolder(tableView.getSelectionModel().getSelectedItem().getPath());
+		if (tableView.getSelectionModel().isEmpty()) {
+			DialogUtil.showAlert("警告！", "小龙特别提醒！！！", "没有选择任何一行数据！请先单击选择一行数据！");
+		} else {
+			openFileOrFolder(tableView.getSelectionModel().getSelectedItem().getPath());
+		}
 	}
 
 	// 打开文件或文件夹的方法
@@ -148,9 +191,13 @@ public class FileInformationManagementInterfaceViewController {
 	 */
 	@FXML
 	public void updatePathInformation() {
-		PathInformationEditingViewController pathInformationEditingViewController = popWindows();
-		FileInformation selectedItem = tableView.getSelectionModel().getSelectedItem();
-		pathInformationEditingViewController.updatePathInformation(selectedItem);
+		if (tableView.getSelectionModel().isEmpty()) {
+			DialogUtil.showAlert("警告！", "小龙特别提醒！！！", "没有选择任何一行数据！请先单击选择一行数据！");
+		} else {
+			PathInformationEditingViewController pathInformationEditingViewController = popWindows();
+			FileInformation selectedItem = tableView.getSelectionModel().getSelectedItem();
+			pathInformationEditingViewController.updatePathInformation(selectedItem);
+		}
 	}
 
 	@FXML
@@ -167,7 +214,7 @@ public class FileInformationManagementInterfaceViewController {
 	 * @date 2024/9/7 18:38
 	 */
 	public void addOrUpdateTitleInformation(FileInformation fileInformation) {
-		ObservableList<FileInformation> tableViewItems = tableView.getItems();
+		FilteredList<FileInformation> tableViewItems = (FilteredList<FileInformation>) tableView.getItems();
 		AtomicBoolean isCz = new AtomicBoolean(false);
 		tableViewItems.forEach((e) -> {
 			if (e.getName().equals(fileInformation.getName())) {
@@ -177,7 +224,11 @@ public class FileInformationManagementInterfaceViewController {
 			}
 		});
 		if (!isCz.get()) {
-			tableViewItems.add(fileInformation);
+			try {
+				observableList.add(fileInformation);
+			} catch (Exception e) {
+				System.out.println(e);
+			}
 		}
 		saveTableData();
 	}
